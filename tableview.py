@@ -51,7 +51,7 @@ class Ui_root_widget(object):
         self.CUSTOMER_ID = "1538797"
     def setupUi(self, root_widget):
         root_widget.setObjectName("root_widget")
-        root_widget.resize(1900, 900)
+        root_widget.resize(1840, 900)
         root_widget.setStyleSheet("border:rgb(0, 0, 0);")
         self.root_layout = QtWidgets.QVBoxLayout(root_widget)
         self.root_layout.setContentsMargins(0, 0, 0, 0)
@@ -211,8 +211,8 @@ class Ui_root_widget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.page2_search_btn.sizePolicy().hasHeightForWidth())
         self.page2_search_btn.setSizePolicy(sizePolicy)
-        self.page2_search_btn.setMinimumSize(QtCore.QSize(50, 50))
-        self.page2_search_btn.setMaximumSize(QtCore.QSize(200, 50))
+        self.page2_search_btn.setMinimumSize(QtCore.QSize(210, 50))
+        self.page2_search_btn.setMaximumSize(QtCore.QSize(210, 50))
         self.page2_search_btn.clicked.connect(self.naver)
         self.page2_search_btn.setStyleSheet("\n"
 "QPushButton::hover {\n"
@@ -398,7 +398,7 @@ class Ui_root_widget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.page2_naver_tablewidget.sizePolicy().hasHeightForWidth())
         self.page2_naver_tablewidget.setSizePolicy(sizePolicy)
-        self.page2_naver_tablewidget.setMinimumSize(QtCore.QSize(170, 0))
+        self.page2_naver_tablewidget.setMinimumSize(QtCore.QSize(400, 0))
         self.page2_naver_tablewidget.setMaximumSize(QtCore.QSize(17000, 16777215))
         self.page2_naver_tablewidget.setStyleSheet("QWidget {\n"
 "    background-color: rgb(0,0,0);\n"
@@ -451,12 +451,16 @@ class Ui_root_widget(object):
 "")
         self.page2_naver_tablewidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
         self.page2_naver_tablewidget.setObjectName("page2_naver_tablewidget")
-        self.page2_naver_tablewidget.setColumnCount(2)
+        self.page2_naver_tablewidget.setColumnCount(4)
         self.page2_naver_tablewidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.page2_naver_tablewidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.page2_naver_tablewidget.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.page2_naver_tablewidget.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.page2_naver_tablewidget.setHorizontalHeaderItem(3, item)
         self.page2_naver_tablewidget.horizontalHeader().setCascadingSectionResizes(True)
         self.page2_naver_tablewidget.verticalHeader().setCascadingSectionResizes(False)
         self.page2_middle_layout.addWidget(self.page2_naver_tablewidget)
@@ -466,8 +470,8 @@ class Ui_root_widget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.page2_result_plaintext.sizePolicy().hasHeightForWidth())
         self.page2_result_plaintext.setSizePolicy(sizePolicy)
-        self.page2_result_plaintext.setMinimumSize(QtCore.QSize(120, 0))
-        self.page2_result_plaintext.setMaximumSize(QtCore.QSize(12000, 16777215))
+        self.page2_result_plaintext.setMinimumSize(QtCore.QSize(300, 0))
+        self.page2_result_plaintext.setMaximumSize(QtCore.QSize(300, 16777215))
         self.page2_result_plaintext.setStyleSheet("    QScrollBar::add-line:vertical {\n"
 "    height: 15px;\n"
 "    border-bottom-left-radius: 7px;\n"
@@ -674,6 +678,8 @@ class Ui_root_widget(object):
         self.page2_scout_tablewidget.setColumnWidth(3, 100)
         self.page2_naver_tablewidget.setColumnWidth(0, 350)
         self.page2_naver_tablewidget.setColumnWidth(1, 100)
+        self.page2_naver_tablewidget.setColumnWidth(2, 100)      
+        self.page2_naver_tablewidget.setColumnWidth(3, 100)
         key_lst_lst=sorted(key_lst_lst, key=lambda key_lst: int(key_lst[1]),reverse=True)
         self.page2_scout_tablewidget.setRowCount(len(key_lst_lst))
         self.page2_naver_tablewidget.setRowCount(50)
@@ -775,7 +781,11 @@ class Ui_root_widget(object):
         item = self.page2_naver_tablewidget.horizontalHeaderItem(0)
         item.setText(_translate("root_widget", "키워드"))
         item = self.page2_naver_tablewidget.horizontalHeaderItem(1)
-        item.setText(_translate("root_widget", "조회수"))
+        item.setText(_translate("root_widget", "검색량"))
+        item = self.page2_naver_tablewidget.horizontalHeaderItem(2)
+        item.setText(_translate("root_widget", "삼품량"))
+        item = self.page2_naver_tablewidget.horizontalHeaderItem(3)
+        item.setText(_translate("root_widget", "경쟁량"))
         self.page2_back_btn.setText(_translate("root_widget", "BACK"))
 import df_rc
 
