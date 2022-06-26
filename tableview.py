@@ -530,7 +530,8 @@ class Ui_root_widget(object):
         self.stack_widget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(root_widget)
         self.page1_btn.clicked.connect(self.click_event1)
-        self.page2_scout_tablewidget.doubleClicked.connect(self.to_page2_plaintext)
+        self.page2_scout_tablewidget.doubleClicked.connect(self.to_page2scout_plaintext)
+        self.page2_naver_tablewidget.doubleClicked.connect(self.to_page2naver_plaintext)
     def clearevent(self):
         self.page2_result_plaintext.clear()
     def copyevent(self):
@@ -686,8 +687,13 @@ class Ui_root_widget(object):
             count += 1
         self.stack_widget.setCurrentIndex(1)
 
-    def to_page2_plaintext(self):
+    def to_page2scout_plaintext(self):
         item = self.page2_scout_tablewidget.currentItem().text()
+        item=item.split('\n')[0]
+
+        self.page2_result_plaintext.appendPlainText(item)
+    def to_page2naver_plaintext(self):
+        item = self.page2_naver_tablewidget.currentItem().text()
         item=item.split('\n')[0]
 
         self.page2_result_plaintext.appendPlainText(item)
@@ -742,7 +748,7 @@ class Ui_root_widget(object):
   
                 continue
         naver_lst_lst=sorted(naver_lst_lst, key=lambda key_lst: int(key_lst[1]),reverse=True)
-        print(naver_lst_lst)
+ 
         count =0
         self.page2_naver_tablewidget.setRowCount(len(naver_lst_lst))
         for naver_lst in naver_lst_lst:
