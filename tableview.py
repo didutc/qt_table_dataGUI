@@ -45,10 +45,7 @@ class Ui_root_widget(object):
         temp = pickle.load(f)
         f.close()
         self.category_data = temp   
-        self.BASE_URL = 'https://api.naver.com'
-        self.API_KEY = "0100000000621aae65a5a7d651ffcb463d89f74a27d08e61f26fa4514be999d771a0cdfb99"
-        self.SECRET_KEY ="AQAAAABiGq5lpafWUf/LRj2J90onCrj+bzbfcT48VD4z9PX9JA=="
-        self.CUSTOMER_ID = "1538797"
+
     def setupUi(self, root_widget):
         root_widget.setObjectName("root_widget")
         root_widget.resize(1840, 900)
@@ -549,7 +546,7 @@ class Ui_root_widget(object):
 
         count = self.page1_scrollarea_layout.count()
         keyword = self.page1_input.toPlainText()
-
+        keyword = keyword.upper()
         for li in range(0,count):
             child = self.page1_scrollarea_layout.takeAt(0)
             try:
@@ -703,14 +700,6 @@ class Ui_root_widget(object):
         item=item.split('\n')[0]
 
         self.page2_result_plaintext.appendPlainText(item)
-
-
-    def generate(self,timestamp, method, uri, secret_key):
-        message = "{}.{}.{}".format(timestamp, method, uri)
-        #hash = hmac.new(bytes(secret_key, "utf-8"), bytes(message, "utf-8"), hashlib.sha256)
-        hash = hmac.new(secret_key.encode("utf-8"), message.encode("utf-8"), hashlib.sha256)
-        hash.hexdigest()
-        return base64.b64encode(hash.digest())
     def switchevent(self):
 
         self.stack_widget.setCurrentIndex(0)
@@ -718,6 +707,14 @@ class Ui_root_widget(object):
         self.page2_scout_tablewidget.clearContents()
         self.page2_linedt.clear()
         self.page2_result_plaintext.clear()	
+
+    def generate(self,timestamp, method, uri, secret_key):
+        message = "{}.{}.{}".format(timestamp, method, uri)
+        #hash = hmac.new(bytes(secret_key, "utf-8"), bytes(message, "utf-8"), hashlib.sha256)
+        hash = hmac.new(secret_key.encode("utf-8"), message.encode("utf-8"), hashlib.sha256)
+        hash.hexdigest()
+        return base64.b64encode(hash.digest())
+
 
     def get_header(self,method, uri, api_key, secret_key, customer_id):
         timestamp = str(int(time.time() * 1000))
