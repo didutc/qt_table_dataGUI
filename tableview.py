@@ -45,7 +45,11 @@ class Ui_root_widget(object):
         temp = pickle.load(f)
         f.close()
         self.category_data = temp   
-
+        self.BASE_URL = 'https://api.naver.com'
+        self.API_KEY = "0100000000621aae65a5a7d651ffcb463d89f74a27d08e61f26fa4514be999d771a0cdfb99"
+        self.SECRET_KEY ="AQAAAABiGq5lpafWUf/LRj2J90onCrj+bzbfcT48VD4z9PX9JA=="
+        self.CUSTOMER_ID = "1538797"
+        self.scoutedata_lst = [] 
     def setupUi(self, root_widget):
         root_widget.setObjectName("root_widget")
         root_widget.resize(1840, 900)
@@ -530,9 +534,11 @@ class Ui_root_widget(object):
         self.retranslateUi(root_widget)
         self.stack_widget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(root_widget)
-        self.page1_btn.clicked.connect(self.click_event1)
+        self.page1_btn.clicked.connect(self.click_event1) 
         self.page2_scout_tablewidget.doubleClicked.connect(self.to_page2scout_plaintext)
-        self.page2_naver_tablewidget.doubleClicked.connect(self.to_page2naver_plaintext)
+        self.page2_naver_tablewidget.doubleClicked.connect(self.page2_naverclickevent)
+        self.page2_naver_tablewidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.page2_scout_tablewidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
     def clearevent(self):
         self.page2_result_plaintext.clear()
     def copyevent(self):
@@ -681,12 +687,14 @@ class Ui_root_widget(object):
         self.page2_scout_tablewidget.setRowCount(len(key_lst_lst))
         self.page2_naver_tablewidget.setRowCount(50)
         count = 0
+        self.scoutedata_lst = []
         for key_lst in key_lst_lst:
 
             self.page2_scout_tablewidget.setItem(count,0, QTableWidgetItem(key_lst[0]))
             self.page2_scout_tablewidget.setItem(count,1, QTableWidgetItem(str(key_lst[1])))
             self.page2_scout_tablewidget.setItem(count,2, QTableWidgetItem(str(key_lst[2])))
             self.page2_scout_tablewidget.setItem(count,3, QTableWidgetItem(str((key_lst[3]))))
+            self.scoutedata_lst.append(key_lst[0])
             count += 1
         self.stack_widget.setCurrentIndex(1)
 
@@ -695,6 +703,44 @@ class Ui_root_widget(object):
         item=item.split('\n')[0]
 
         self.page2_result_plaintext.appendPlainText(item)
+    def page2_naverclickevent(self):
+        row = self.page2_naver_tablewidget.currentIndex().row()
+        column = self.page2_naver_tablewidget.currentIndex().column()
+        try:
+            t = self.page2_naver_tablewidget.item(row, column+2).text()
+            t = self.page2_naver_tablewidget.item(row, column).text()
+            self.page2_result_plaintext.appendPlainText(t)
+            pass
+        except:
+
+
+            item = self.page2_naver_tablewidget.currentItem().text()
+            headers = {
+                "accept": "text/plain, */*; q=0.01",
+                "accept-language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+                "cache-control": "no-cache",
+                "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "pragma": "no-cache",
+                "sec-ch-ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-origin",
+                "x-requested-with": "XMLHttpRequest"
+            }
+            body =  { 'keyword':item}
+            r = requests.post('https://api.itemscout.io/api/keyword',data=body)
+            q = r.text
+            q= q.split(':')[-1][:-1]
+
+            r = requests.get('https://api.itemscout.io/api/v2/keyword/stats/'+q+'').text
+            totalProductCount = r.split('"totalProductCount":')[1].split(',')[0]
+
+            totalSearchCount= r.split('"totalSearchCount":')[1].split(',')[0]
+            self.page2_naver_tablewidget.setItem(row,2, QTableWidgetItem(str(totalProductCount)))
+            self.page2_naver_tablewidget.setItem(row,3, QTableWidgetItem(str(round(int(totalProductCount)/int(totalSearchCount),2))))
+
     def to_page2naver_plaintext(self):
         item = self.page2_naver_tablewidget.currentItem().text()
         item=item.split('\n')[0]
@@ -750,9 +796,14 @@ class Ui_root_widget(object):
             except:
   
                 continue
-        naver_lst_lst=sorted(naver_lst_lst, key=lambda key_lst: int(key_lst[1]),reverse=True)
- 
+        prenaver_lst_lst=sorted(naver_lst_lst, key=lambda key_lst: int(key_lst[1]),reverse=True)
+
         count =0
+        naver_lst_lst = []
+        for li_lst in prenaver_lst_lst:
+            t = doubleagent.sublist(self.scoutedata_lst,li_lst[0])
+            if len(self.scoutedata_lst) == len(t):
+                naver_lst_lst.append(li_lst)
         self.page2_naver_tablewidget.setRowCount(len(naver_lst_lst))
         for naver_lst in naver_lst_lst:
 
@@ -793,5 +844,6 @@ if __name__ == "__main__":
     root_widget = QtWidgets.QWidget()
     ui = Ui_root_widget()
     ui.setupUi(root_widget)
+    suppress_qt_warnings()
     root_widget.show()
     sys.exit(app.exec_())

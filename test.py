@@ -22,10 +22,7 @@ import  hashlib
 import  base64
 import json
 import doubleagent
-BASE_URL = 'https://api.naver.com'
-API_KEY = "0100000000621aae65a5a7d651ffcb463d89f74a27d08e61f26fa4514be999d771a0cdfb99"
-SECRET_KEY ="AQAAAABiGq5lpafWUf/LRj2J90onCrj+bzbfcT48VD4z9PX9JA=="
-CUSTOMER_ID = "1538797"
+
 def generate(timestamp, method, uri, secret_key):
     message = "{}.{}.{}".format(timestamp, method, uri)
     #hash = hmac.new(bytes(secret_key, "utf-8"), bytes(message, "utf-8"), hashlib.sha256)
