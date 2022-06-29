@@ -50,9 +50,10 @@ class Ui_root_widget(object):
         self.SECRET_KEY ="AQAAAABiGq5lpafWUf/LRj2J90onCrj+bzbfcT48VD4z9PX9JA=="
         self.CUSTOMER_ID = "1538797"
         self.scoutedata_lst = [] 
+        self.copydata_lst_lst=[]
     def setupUi(self, root_widget):
         root_widget.setObjectName("root_widget")
-        root_widget.resize(2260, 900)
+        root_widget.resize(1840, 900)
         root_widget.setStyleSheet("border:rgb(0, 0, 0);")
         self.root_layout = QtWidgets.QVBoxLayout(root_widget)
         self.root_layout.setContentsMargins(0, 0, 0, 0)
@@ -393,7 +394,6 @@ class Ui_root_widget(object):
         self.page2_scout_tablewidget.horizontalHeader().setCascadingSectionResizes(False)
         self.page2_scout_tablewidget.verticalHeader().setCascadingSectionResizes(False)
         self.page2_middle_layout.addWidget(self.page2_scout_tablewidget)
-# page2_naver_tablewidget
         self.page2_naver_tablewidget = QtWidgets.QTableWidget(self.page2_middle_widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -466,23 +466,15 @@ class Ui_root_widget(object):
         self.page2_naver_tablewidget.horizontalHeader().setCascadingSectionResizes(True)
         self.page2_naver_tablewidget.verticalHeader().setCascadingSectionResizes(False)
         self.page2_middle_layout.addWidget(self.page2_naver_tablewidget)
-#  end
-        self.page2_resultcopy_tablewidget = QtWidgets.QTableWidget(self.page2_middle_widget)
+        self.page2_result_plaintext = QtWidgets.QPlainTextEdit(self.page2_middle_widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.page2_resultcopy_tablewidget.sizePolicy().hasHeightForWidth())
-        self.page2_resultcopy_tablewidget.setSizePolicy(sizePolicy)
-        self.page2_resultcopy_tablewidget.setMinimumSize(QtCore.QSize(400, 0))
-        self.page2_resultcopy_tablewidget.setMaximumSize(QtCore.QSize(17000, 16777215))
-        self.page2_resultcopy_tablewidget.setStyleSheet("QWidget {\n"
-"    background-color: rgb(0,0,0);\n"
-"    font-size: 10pt;\n"
-"border-style: solid;\n"
-"border-color:rgb(0, 0, 0);\n"
-"border-radius: 10px;\n"
-"}\n"
-"    QScrollBar::add-line:vertical {\n"
+        sizePolicy.setHeightForWidth(self.page2_result_plaintext.sizePolicy().hasHeightForWidth())
+        self.page2_result_plaintext.setSizePolicy(sizePolicy)
+        self.page2_result_plaintext.setMinimumSize(QtCore.QSize(800, 0))
+        self.page2_result_plaintext.setMaximumSize(QtCore.QSize(800, 16777215))
+        self.page2_result_plaintext.setStyleSheet("    QScrollBar::add-line:vertical {\n"
 "    height: 15px;\n"
 "    border-bottom-left-radius: 7px;\n"
 "    border-bottom-right-radius: 7px;\n"
@@ -509,37 +501,19 @@ class Ui_root_widget(object):
 "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
 "    background: none;\n"
 "}\n"
-"/* 테이블 뷰 속성 */\n"
-"QHeaderView::section {\n"
-"    background-color: rgb(30, 28, 28);\n"
-"    padding: 1px;\n"
-"    font-size: 14pt;\n"
-"    border-style: none;\n"
-"    border: 1px solid #fffff8;\n"
+"QPlainTextEdit{\n"
 "\n"
-"}\n"
-"QTableView QTableCornerButton::section {\n"
-"    background-color: rgb(30, 28, 28);\n"
-"}\n"
+"border:rgb(0, 0, 0);\n"
+"color:white;\n"
+"font-size:20px;\n"
 "\n"
+"background-color: rgb(0, 0, 0);\n"
 "\n"
-"")
-        self.page2_resultcopy_tablewidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
-        self.page2_resultcopy_tablewidget.setObjectName("page2_resultcopy_tablewidget")
-        self.page2_resultcopy_tablewidget.setColumnCount(4)
-        self.page2_resultcopy_tablewidget.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        self.page2_resultcopy_tablewidget.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.page2_resultcopy_tablewidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.page2_resultcopy_tablewidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.page2_resultcopy_tablewidget.setHorizontalHeaderItem(3, item)
-        self.page2_resultcopy_tablewidget.horizontalHeader().setCascadingSectionResizes(True)
-        self.page2_resultcopy_tablewidget.verticalHeader().setCascadingSectionResizes(False)
-        self.page2_middle_layout.addWidget(self.page2_resultcopy_tablewidget)
-#  end
+"}")
+        self.page2_result_plaintext.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.page2_result_plaintext.setPlainText("")
+        self.page2_result_plaintext.setObjectName("page2_result_plaintext")
+        self.page2_middle_layout.addWidget(self.page2_result_plaintext)
         self.page2_main_layout.addWidget(self.page2_middle_widget)
         self.page2_back_btn = QtWidgets.QPushButton(self.page2_main_widget)
         self.page2_back_btn.clicked.connect(self.switchevent)
@@ -564,35 +538,14 @@ class Ui_root_widget(object):
         self.page1_btn.clicked.connect(self.click_event1) 
         self.page2_scout_tablewidget.doubleClicked.connect(self.to_page2scout_plaintext)
         self.page2_naver_tablewidget.doubleClicked.connect(self.page2_naverclickevent)
-        self.page2_resultcopy_tablewidget.doubleClicked.connect(self.remove_page2_resultcopy_tablewidget)
         self.page2_naver_tablewidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.page2_scout_tablewidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.page2_resultcopy_tablewidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
     def clearevent(self):
-        self.page2_resultcopy_tablewidget.clear()
+        self.page2_result_plaintext.clear()
     def copyevent(self):
-        maxc = self.page2_resultcopy_tablewidget.columnCount()
-        maxr = self.page2_resultcopy_tablewidget.rowCount()
-        count = 0
-        while True:
-            try:
-                flag =self.page2_resultcopy_tablewidget.item(count, 0).text()
-                count += 1
-            except:
-                voidmaxi = count
-                break
-        copy_list = []
-
-        for row in range(0,voidmaxi):
-
-            copykeyword=(self.page2_resultcopy_tablewidget.item(row, 0).text())
-            copykeysrcamt=(self.page2_resultcopy_tablewidget.item(row, 1).text())
-            copykeyprdamt=(self.page2_resultcopy_tablewidget.item(row, 2).text()) 
-            copykeyavg=(self.page2_resultcopy_tablewidget.item(row, 3).text()) 
-            copy = copykeyword+'\n\t'+copykeysrcamt+'\n\t\t'+copykeyprdamt+'\n\t\t\t'+copykeyavg
-            copy_list.append(copy)
-        copy_rw ='\n'.join(copy_list)
-        pyperclip.copy(copy_rw)
+        t = self.page2_result_plaintext.toPlainText()
+        pyperclip.copy(t)
+        self.page2_result_plaintext.copy()
     def linkevent(self):
         t = self.page2_linedt.text()
         webbrowser.open("https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query="+t)
@@ -731,15 +684,9 @@ class Ui_root_widget(object):
         self.page2_naver_tablewidget.setColumnWidth(1, 100)
         self.page2_naver_tablewidget.setColumnWidth(2, 100)      
         self.page2_naver_tablewidget.setColumnWidth(3, 100)
-        self.page2_naver_tablewidget.setRowCount(50)
-        self.page2_resultcopy_tablewidget.setColumnWidth(0, 350)
-        self.page2_resultcopy_tablewidget.setColumnWidth(1, 100)
-        self.page2_resultcopy_tablewidget.setColumnWidth(2, 100)      
-        self.page2_resultcopy_tablewidget.setColumnWidth(3, 100)
-        self.page2_resultcopy_tablewidget.setRowCount(100)
         key_lst_lst=sorted(key_lst_lst, key=lambda key_lst: int(key_lst[1]),reverse=True)
         self.page2_scout_tablewidget.setRowCount(len(key_lst_lst))
-
+        self.page2_naver_tablewidget.setRowCount(50)
         count = 0
         self.scoutedata_lst = []
         for key_lst in key_lst_lst:
@@ -751,38 +698,19 @@ class Ui_root_widget(object):
             self.scoutedata_lst.append(key_lst[0])
             count += 1
         self.stack_widget.setCurrentIndex(1)
-
+        self.copydata_lst_lst=[]
     def to_page2scout_plaintext(self):
-        row = self.page2_scout_tablewidget.currentItem().row()
-        keyword = self.page2_scout_tablewidget.item(row, 0).text()
-        searchamt = self.page2_scout_tablewidget.item(row, 1).text()
-        prdamt = self.page2_scout_tablewidget.item(row, 2).text()
-        average = self.page2_scout_tablewidget.item(row, 3).text()
+        item = self.page2_scout_tablewidget.currentItem().text()
+        item=item.split('\n')[0]
 
-
-        count = 0
-        while True:
-            try:
-                flag =self.page2_resultcopy_tablewidget.item(count, 0).text()
-                count += 1
-            except:
-                voidmaxi = count
-                break
-        self.page2_resultcopy_tablewidget.insertRow(voidmaxi+1)
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,0, QTableWidgetItem(str(keyword)))
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,1, QTableWidgetItem(str(searchamt)))
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,2, QTableWidgetItem(str(prdamt)))
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,3, QTableWidgetItem(str(average)))
-    def remove_page2_resultcopy_tablewidget(self):
-        row = self.page2_resultcopy_tablewidget.currentItem().row()
-        self.page2_resultcopy_tablewidget.removeRow(row)
+        self.page2_result_plaintext.appendPlainText(item)
     def page2_naverclickevent(self):
         row = self.page2_naver_tablewidget.currentIndex().row()
         column = self.page2_naver_tablewidget.currentIndex().column()
         try:
             t = self.page2_naver_tablewidget.item(row, column+2).text()
             t = self.page2_naver_tablewidget.item(row, column).text()
-            self.to_page2naver_resulttext()
+            self.page2_result_plaintext.appendPlainText(t)
             pass
         except:
 
@@ -814,36 +742,18 @@ class Ui_root_widget(object):
             self.page2_naver_tablewidget.setItem(row,2, QTableWidgetItem(str(totalProductCount)))
             self.page2_naver_tablewidget.setItem(row,3, QTableWidgetItem(str(round(int(totalProductCount)/int(totalSearchCount),2))))
 
-    def to_page2naver_resulttext(self):
+    def to_page2naver_plaintext(self):
         item = self.page2_naver_tablewidget.currentItem().text()
-        row = self.page2_naver_tablewidget.currentItem().row()
-        keyword = self.page2_naver_tablewidget.item(row, 0).text()
-        searchamt = self.page2_naver_tablewidget.item(row, 1).text()
-        prdamt = self.page2_naver_tablewidget.item(row, 2).text()
-        average = self.page2_naver_tablewidget.item(row, 3).text()
+        item=item.split('\n')[0]
 
-
-        count = 0
-        while True:
-            try:
-                flag =self.page2_resultcopy_tablewidget.item(count, 0).text()
-                count += 1
-            except:
-                voidmaxi = count
-                break
-        self.page2_resultcopy_tablewidget.insertRow(voidmaxi+1)
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,0, QTableWidgetItem(str(keyword)))
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,1, QTableWidgetItem(str(searchamt)))
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,2, QTableWidgetItem(str(prdamt)))
-        self.page2_resultcopy_tablewidget.setItem(voidmaxi,3, QTableWidgetItem(str(average)))
+        self.page2_result_plaintext.appendPlainText(item)
     def switchevent(self):
 
         self.stack_widget.setCurrentIndex(0)
         self.page2_naver_tablewidget.clearContents()
         self.page2_scout_tablewidget.clearContents()
-        self.page2_resultcopy_tablewidget.clearContents()
         self.page2_linedt.clear()
-
+        self.page2_result_plaintext.clear()	
 
     def generate(self,timestamp, method, uri, secret_key):
         message = "{}.{}.{}".format(timestamp, method, uri)
@@ -924,14 +834,6 @@ class Ui_root_widget(object):
         item = self.page2_naver_tablewidget.horizontalHeaderItem(2)
         item.setText(_translate("root_widget", "삼품량"))
         item = self.page2_naver_tablewidget.horizontalHeaderItem(3)
-        item.setText(_translate("root_widget", "경쟁량"))
-        item = self.page2_resultcopy_tablewidget.horizontalHeaderItem(0)
-        item.setText(_translate("root_widget", "키워드"))
-        item = self.page2_resultcopy_tablewidget.horizontalHeaderItem(1)
-        item.setText(_translate("root_widget", "검색량"))
-        item = self.page2_resultcopy_tablewidget.horizontalHeaderItem(2)
-        item.setText(_translate("root_widget", "상품량"))
-        item = self.page2_resultcopy_tablewidget.horizontalHeaderItem(3)
         item.setText(_translate("root_widget", "경쟁량"))
         self.page2_back_btn.setText(_translate("root_widget", "BACK"))
         self.page1_btn.setShortcut("Return")    
