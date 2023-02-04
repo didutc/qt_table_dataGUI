@@ -642,7 +642,10 @@ class Ui_root_widget(object):
         pyperclip.copy(copy_rw)
     def linkevent(self):
         t = self.page2_linedt.text()
-        webbrowser.open("https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query="+t)
+        q = t.replace(' ','+')
+        webbrowser.open("https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query="+q)
+        t = t.replace(' ','-')
+        webbrowser.open("https://ko.aliexpress.com/af/"+t+".html?spm")
     def click_event1(self,cate):
 
         count = self.page1_scrollarea_layout.count()
