@@ -636,7 +636,7 @@ class Ui_root_widget(object):
             copykeysrcamt=(self.page2_resultcopy_tablewidget.item(row, 1).text())
             copykeyprdamt=(self.page2_resultcopy_tablewidget.item(row, 2).text()) 
             copykeyavg=(self.page2_resultcopy_tablewidget.item(row, 3).text()) 
-            copy = copykeyword+'\n\t'+copykeysrcamt+'\n\t\t'+copykeyprdamt+'\n\t\t\t'+copykeyavg
+            copy = copykeyword+'      '+copykeysrcamt+'      '+copykeyprdamt+'      '+copykeyavg
             copy_list.append(copy)
         copy_rw ='\n'.join(copy_list)
         pyperclip.copy(copy_rw)
@@ -1002,7 +1002,7 @@ class Ui_root_widget(object):
             li = array[al]
             try:
                 if not self.rod == li['firstCategory']:
-                    print(1)
+
                     continue
                 name = li['keyword']
                 bid = li['bid']
