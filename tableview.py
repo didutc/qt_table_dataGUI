@@ -58,7 +58,7 @@ class Ui_root_widget(object):
         plkslotname_lst = pyzard.ll2l(plkslotname_lst)
         plkslotnumber_lst = pyzard.ll2l(plkslotnumber_lst)
         temp = [plkslotname_lst,plkslotnumber_lst]
-
+        self.naver_db = []
         self.category_data = temp   
         self.BASE_URL = 'https://api.naver.com'
         self.API_KEY = "0100000000621aae65a5a7d651ffcb463d89f74a27d08e61f26fa4514be999d771a0cdfb99"
@@ -817,40 +817,44 @@ class Ui_root_widget(object):
 
 
             item = self.page2_naver_tablewidget.currentItem().text()
+            dumpeddb = json.dumps(self.naver_db,ensure_ascii=False)
+
+
+            chunk = pyzard.pinset(dumpeddb,'"'+item+'"','}')
+
+
+            monthlyPcQcCnt = pyzard.pinset(chunk,'"monthlyPcQcCnt": ',',')
+
+            monthlyMobileQcCnt = pyzard.pinset(chunk,'"monthlyMobileQcCnt": ',',')
+            totalSearchCount = int(monthlyPcQcCnt)+int(monthlyMobileQcCnt)
+
+
             headers = {
-                'Accept': 'application/json, text/plain, */*',
                 'Accept-Encoding': 'gzip, deflate, br, zstd',
                 'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Origin': 'https://itemscout.io',
-                'Referer': 'https://itemscout.io/',
-                'Sec-Ch-Ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
-                'Sec-Ch-Ua-Mobile': '?0',
-                'Sec-Ch-Ua-Platform': '"Windows"',
-                'Sec-Fetch-Dest': 'empty',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Site': 'same-site',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+                'Cache-Control': 'max-age=0', 
+                'Referer': 'https://search.naver.com/search.naver?ie=UTF-8&query=%ED%86%A0%EB%A7%88%ED%86%A0&sm=chr_hty',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'same-origin',
+                'Sec-Fetch-User': '?1',
+                'Upgrade-Insecure-Requests': '1',
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
             }
-            body =  { 'keyword':item}
-            r = requests.post('https://api.itemscout.io/api/keyword',data=body,headers=headers)
-            q = r.text
-            q= q.split(':')[-1][:-1]
+            url = "https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query="+item+""
+
+            # HTTP GET 요청 보내기
             try:
-                r = requests.get('https://api.itemscout.io/api/v2/keyword/stats/'+q+'',headers=headers).text
-
-                totalProductCount = r.split('"totalProductCount":')[1].split(',')[0]
-
-                totalSearchCount= r.split('"totalSearchCount":')[1].split(',')[0]
+                response = requests.get(url,headers=headers).text
+                totalProductCount = pyzard.pinset(response,'"total":',',')
             except:
-                r = requests.get('https://api.itemscout.io/api/v2/keyword/stats/'+q+'',headers=headers).text
-
-                totalProductCount = r.split('"totalProductCount":')[1].split(',')[0]
-
-                totalSearchCount= r.split('"totalSearchCount":')[1].split(',')[0]
-
-            self.page2_naver_tablewidget.setItem(row,2, QTableWidgetItem(str(totalProductCount)))
-            self.page2_naver_tablewidget.setItem(row,3, QTableWidgetItem(str(round(int(totalProductCount)/int(totalSearchCount),2))))
+                totalProductCount=1
+            try:
+                self.page2_naver_tablewidget.setItem(row,2, QTableWidgetItem(str(totalProductCount)))
+                self.page2_naver_tablewidget.setItem(row,3, QTableWidgetItem(str(round(int(totalProductCount)/int(totalSearchCount),2))))
+            except:
+                self.page2_naver_tablewidget.setItem(row,2, QTableWidgetItem(str(totalProductCount)))
+                self.page2_naver_tablewidget.setItem(row,3, QTableWidgetItem(str('?')))
 
     def to_page2naver_resulttext(self):
         item = self.page2_naver_tablewidget.currentItem().text()
@@ -911,6 +915,7 @@ class Ui_root_widget(object):
 
 
         array = key_id['keywordList']
+        self.naver_db=array
         naver_lst_lst = []
         for li in array:
             try:
